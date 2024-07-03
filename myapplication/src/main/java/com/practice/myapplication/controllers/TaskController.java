@@ -1,6 +1,7 @@
 package com.practice.myapplication.controllers;
 
 import com.practice.myapplication.models.Task;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,7 +22,11 @@ public class TaskController {
         return "get tasks for page : " + page + ", limit :" + limit + ", sort : " + sort;
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "/{id}" ,
+                produces = {
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_JSON_VALUE
+                })
     public Task GetTaskByID(@PathVariable String id)
     {
         Task t = new Task(1,"Work out");
