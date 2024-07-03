@@ -1,5 +1,6 @@
 package com.practice.myapplication.controllers;
 
+import com.practice.myapplication.models.Task;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,9 +22,10 @@ public class TaskController {
     }
 
     @GetMapping(path = "/{id}")
-    public String GetTaskByID(@PathVariable String id)
+    public Task GetTaskByID(@PathVariable String id)
     {
-        return "get task for ID : " + id;
+        Task t = new Task(1,"Work out");
+        return t;
     }
 
     @PostMapping
