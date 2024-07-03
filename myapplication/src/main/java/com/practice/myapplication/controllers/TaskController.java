@@ -6,10 +6,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/tasks")
 public class TaskController {
 
-    @GetMapping
+    @GetMapping("/all")
     public String GetTask()
     {
         return "get tasks";
+    }
+
+    @GetMapping
+    public String GetTaskByPagination( @RequestParam(value = "page") int page,
+                                       @RequestParam(value = "limit") int limit)
+    {
+        return "get tasks for page : " + page + " and limit :" + limit;
     }
 
     @GetMapping(path = "/{id}")
