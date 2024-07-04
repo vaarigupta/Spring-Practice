@@ -1,7 +1,10 @@
 package com.practice.myapplication.controllers;
 
 import com.practice.myapplication.models.Task;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,10 +30,10 @@ public class TaskController {
                     MediaType.APPLICATION_XML_VALUE,
                     MediaType.APPLICATION_JSON_VALUE
                 })
-    public Task GetTaskByID(@PathVariable String id)
+    public ResponseEntity<Task> GetTaskByID(@PathVariable String id)
     {
         Task t = new Task(1,"Work out");
-        return t;
+        return new ResponseEntity<Task>(t,HttpStatus.OK);
     }
 
     @PostMapping
