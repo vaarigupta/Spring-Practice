@@ -73,11 +73,8 @@ public class TaskController {
 
         String taskID = UUID.randomUUID().toString();
         t.setId(taskID);
-        if(taskMap.isEmpty())
-        {
-            taskMap.put(taskID,t);
-        }
 
+        taskMap.put(taskID,t);
         return new ResponseEntity<Task>(taskMap.get(taskID),HttpStatus.CREATED);
     }
 
