@@ -107,10 +107,18 @@ public class TaskController {
     }
 
 
-    @DeleteMapping
-    public  String DeleteTask()
+    @DeleteMapping(
+            path = "{id}"
+    )
+    public  ResponseEntity<Void> DeleteTask(@PathVariable String id)
     {
-        return "Delete tasks";
+        if(taskMap.containsKey(id))
+        {
+            taskMap.remove(id);
+            return ResponseEntity.noContent().build();
+        }
+        else
+            return ResponseEntity.notFound().build();
     }
 
 }
