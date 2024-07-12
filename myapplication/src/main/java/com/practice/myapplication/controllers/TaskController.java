@@ -8,6 +8,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 
 @RestController
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class TaskController {
 
 
+    Map<String,Task> taskMap = new HashMap<>();;
     @GetMapping
     public String GetTask( @RequestParam(value = "page", defaultValue = "1", required = false) int page, //defaultvalue makes the param optional by setting the default value
                                        @RequestParam(value = "limit", required = false) Integer limit, //we have used wrapper class for int instead of primitive type because required parameter sets the default value to be null which is not possible in case of primitive data type, only possible with objects
@@ -31,13 +35,14 @@ public class TaskController {
                 })
     public ResponseEntity<Task> GetTaskByID(@PathVariable String id)
     {
-        Task t = new Task();
-        t.setId(1);
-        t.setName("Work out");
-        t.setDesc("Daily for 1 hour");
-        t.setCompleted(true);
-      //  Task t = new Task(1,"Work out","Daily for 1 hour",true);
-        return new ResponseEntity<Task>(t,HttpStatus.OK);
+        if(taskMap.containsKey(id))
+        {
+            return new ResponseEntity<>(taskMap.get(id),HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
     }
 
     @PostMapping(
@@ -56,8 +61,15 @@ public class TaskController {
         t.setName(taskRequestModel.getName());
         t.setDesc(taskRequestModel.getDesc());
         t.setCompleted(taskRequestModel.isCompleted());
-       // Task t = new Task(1,taskRequestModel.getName(),taskRequestModel.getDesc(),taskRequestModel.isCompleted());
-        return new ResponseEntity<Task>(t,HttpStatus.CREATED);
+
+        String taskID = UUID.randomUUID().toString();
+        t.setId(taskID);
+        if(taskMap.isEmpty())
+        {
+            taskMap.put(taskID,t);
+        }
+
+        return new ResponseEntity<Task>(taskMap.get(taskID),HttpStatus.CREATED);
     }
 
     @PutMapping
