@@ -9,9 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+
+import java.util.*;
 
 
 @RestController
@@ -22,11 +21,22 @@ public class TaskController {
 
     Map<String,Task> taskMap = new HashMap<>();;
     @GetMapping
-    public String GetTask( @RequestParam(value = "page", defaultValue = "1", required = false) int page, //defaultvalue makes the param optional by setting the default value
-                                       @RequestParam(value = "limit", required = false) Integer limit, //we have used wrapper class for int instead of primitive type because required parameter sets the default value to be null which is not possible in case of primitive data type, only possible with objects
-                                       @RequestParam(value="sort", defaultValue = "desc") String sort)
+    public ResponseEntity<List<Task>> GetTask()
     {
-        return "get tasks for page : " + page + ", limit :" + limit + ", sort : " + sort;
+        if(!taskMap.isEmpty())
+        {
+            List<Task> taskList = new ArrayList<>();
+            for (Map.Entry<String,Task> entry : taskMap.entrySet())
+            {
+                taskList.add(entry.getValue());
+            }
+            return new ResponseEntity<>(taskList, HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
     }
 
 
@@ -104,3 +114,7 @@ public class TaskController {
     }
 
 }
+
+//    @RequestParam(value = "page", defaultValue = "1", required = false) int page, //defaultvalue makes the param optional by setting the default value
+//    @RequestParam(value = "limit", required = false) Integer limit, //we have used wrapper class for int instead of primitive type because required parameter sets the default value to be null which is not possible in case of primitive data type, only possible with objects
+//    @RequestParam(value="sort", defaultValue = "desc") String sort
