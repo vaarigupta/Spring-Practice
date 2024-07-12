@@ -1,6 +1,7 @@
 package com.practice.myapplication.controllers;
 
-import com.practice.myapplication.models.request.TaskRequestModel;
+import com.practice.myapplication.models.request.CreateTaskRequestModel;
+import com.practice.myapplication.models.request.UpdateTaskRequestModel;
 import com.practice.myapplication.models.response.Task;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ import java.util.UUID;
 
 
 @RestController
-@RequestMapping("/tasks")
+@RequestMapping("tasks")
 @Validated
 public class TaskController {
 
@@ -28,7 +29,8 @@ public class TaskController {
         return "get tasks for page : " + page + ", limit :" + limit + ", sort : " + sort;
     }
 
-    @GetMapping(path = "/{id}" ,
+
+    @GetMapping(path = "{id}" ,
                 produces = {
                     MediaType.APPLICATION_XML_VALUE,
                     MediaType.APPLICATION_JSON_VALUE
@@ -45,17 +47,14 @@ public class TaskController {
         }
     }
 
+
     @PostMapping(
-            consumes = {
-                    MediaType.APPLICATION_JSON_VALUE,
-                    MediaType.APPLICATION_XML_VALUE
-            },
-            produces = {
-                    MediaType.APPLICATION_JSON_VALUE,
-                    MediaType.APPLICATION_XML_VALUE
-            }
+            consumes = { MediaType.APPLICATION_JSON_VALUE,
+                         MediaType.APPLICATION_XML_VALUE},
+            produces = { MediaType.APPLICATION_JSON_VALUE,
+                         MediaType.APPLICATION_XML_VALUE}
     )
-    public ResponseEntity<Task> CreateTask(@Valid @RequestBody TaskRequestModel taskRequestModel)
+    public ResponseEntity<Task> CreateTask(@Valid @RequestBody CreateTaskRequestModel taskRequestModel)
     {
         Task t = new Task();
         t.setName(taskRequestModel.getName());
@@ -72,11 +71,31 @@ public class TaskController {
         return new ResponseEntity<Task>(taskMap.get(taskID),HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public String UpdateTask()
+
+    @PutMapping(
+            path = "{id}",
+            consumes = { MediaType.APPLICATION_JSON_VALUE,
+                         MediaType.APPLICATION_XML_VALUE},
+            produces = { MediaType.APPLICATION_JSON_VALUE,
+                         MediaType.APPLICATION_XML_VALUE}
+    )
+    public ResponseEntity<Task> UpdateTask(@PathVariable String id, @Valid @RequestBody UpdateTaskRequestModel updateTaskRequestModel)
     {
-        return "Update tasks";
+        if(taskMap.containsKey(id))
+        {
+            Task task = taskMap.get(id);
+            task.setName(updateTaskRequestModel.getName());
+            task.setDesc(updateTaskRequestModel.getDesc());
+            taskMap.put(id,task);
+
+            return new ResponseEntity<>(task,HttpStatus.CREATED);
+        }
+        else
+        {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
     }
+
 
     @DeleteMapping
     public  String DeleteTask()
