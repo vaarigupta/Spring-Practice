@@ -19,8 +19,8 @@ public class ContactRepository {
     //get single contact
     public Contact getContact(int index){ return contacts.get(index);}
 
-    //save contact
-    public void saveContact(Contact contact){
+    //create contact
+    public void createContact(Contact contact){
         contacts.add(contact);
     }
 
