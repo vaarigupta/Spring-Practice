@@ -25,13 +25,8 @@ public class ContactController {
 
     @GetMapping("/contact/{id}")
     public ResponseEntity<Contact> getContact(@PathVariable String id){
-       try{
            Contact contact = contactService.getContactById(id);
            return new ResponseEntity<>(contact, HttpStatus.OK);
-       }
-       catch (ContactNotFoundException e){
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-       }
     }
 
     @PostMapping("/contact")
@@ -43,24 +38,14 @@ public class ContactController {
 
     @PutMapping("/contact/{id}")
     public ResponseEntity<Contact> updateContact(@PathVariable  String id, @RequestBody Contact contact){
-         try{
              contactService.updateContact(id,contact);
              Contact updatedContact = contactService.getContactById(id);
              return new ResponseEntity<>(updatedContact,HttpStatus.OK);
-         } catch (ContactNotFoundException e) {
-             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-         }
-
     }
 
     @DeleteMapping("/contact/{id}")
     public ResponseEntity<HttpStatus> deleteContact(@PathVariable String id){
-         try{
              contactService.deleteContact(id);
              return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-         }
-         catch (ContactNotFoundException e){
-             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-         }
     }
 }

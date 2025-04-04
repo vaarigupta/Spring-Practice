@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface ContactService {
 
-    Contact getContactById(String id) throws ContactNotFoundException;
+    Contact getContactById(String id) ;
     void createContact(Contact contact);
     List<Contact> getAllContacts();
-    void updateContact(String id, Contact contact) throws ContactNotFoundException;
-    void deleteContact(String id) throws ContactNotFoundException;
+    void updateContact(String id, Contact contact) ;
+    void deleteContact(String id);
 }

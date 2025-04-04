@@ -24,7 +24,7 @@ public class ContactServiceImpl implements ContactService{
     }
 
     @Override
-    public Contact getContactById(String id) throws ContactNotFoundException {
+    public Contact getContactById(String id){
         return contactRepository.getContact(findIndexById(id));
     }
 
@@ -39,12 +39,12 @@ public class ContactServiceImpl implements ContactService{
     }
 
     @Override
-    public void updateContact(String id, Contact contact) throws ContactNotFoundException {
+    public void updateContact(String id, Contact contact){
         contactRepository.updateContact(findIndexById(id),contact);
     }
 
     @Override
-    public void deleteContact(String id) throws ContactNotFoundException {
+    public void deleteContact(String id){
         contactRepository.deleteContact(findIndexById(id));
     }
 
