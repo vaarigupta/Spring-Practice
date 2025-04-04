@@ -1,5 +1,6 @@
 package com.practice.javacourse.controller;
 
+import com.practice.javacourse.exception.NoContactException;
 import com.practice.javacourse.model.Contact;
 import com.practice.javacourse.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,13 @@ public class ContactController {
 
     @GetMapping("/contact/{id}")
     public ResponseEntity<Contact> getContact(@PathVariable String id){
-        Contact contact = contactService.getContactById(id);
-        return new ResponseEntity<>(contact, HttpStatus.OK);
+       try{
+           Contact contact = contactService.getContactById(id);
+           return new ResponseEntity<>(contact, HttpStatus.OK);
+       }
+       catch (NoContactException e){
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       }
     }
 
     @PostMapping("/contact")
@@ -37,14 +43,24 @@ public class ContactController {
 
     @PutMapping("/contact/{id}")
     public ResponseEntity<Contact> updateContact(@PathVariable  String id, @RequestBody Contact contact){
-            contactService.updateContact(id,contact);
-           Contact updatedContact = contactService.getContactById(id);
-            return new ResponseEntity<>(updatedContact,HttpStatus.OK);
+         try{
+             contactService.updateContact(id,contact);
+             Contact updatedContact = contactService.getContactById(id);
+             return new ResponseEntity<>(updatedContact,HttpStatus.OK);
+         } catch (NoContactException e) {
+             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+         }
+
     }
 
     @DeleteMapping("/contact/{id}")
     public ResponseEntity<HttpStatus> deleteContact(@PathVariable String id){
-        contactService.deleteContact(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+         try{
+             contactService.deleteContact(id);
+             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+         }
+         catch (NoContactException e){
+             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+         }
     }
 }
