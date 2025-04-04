@@ -1,6 +1,6 @@
 package com.practice.javacourse.controller;
 
-import com.practice.javacourse.exception.NoContactException;
+import com.practice.javacourse.exception.ContactNotFoundException;
 import com.practice.javacourse.model.Contact;
 import com.practice.javacourse.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class ContactController {
            Contact contact = contactService.getContactById(id);
            return new ResponseEntity<>(contact, HttpStatus.OK);
        }
-       catch (NoContactException e){
+       catch (ContactNotFoundException e){
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
        }
     }
@@ -47,7 +47,7 @@ public class ContactController {
              contactService.updateContact(id,contact);
              Contact updatedContact = contactService.getContactById(id);
              return new ResponseEntity<>(updatedContact,HttpStatus.OK);
-         } catch (NoContactException e) {
+         } catch (ContactNotFoundException e) {
              return new ResponseEntity<>(HttpStatus.NOT_FOUND);
          }
 
@@ -59,7 +59,7 @@ public class ContactController {
              contactService.deleteContact(id);
              return new ResponseEntity<>(HttpStatus.NO_CONTENT);
          }
-         catch (NoContactException e){
+         catch (ContactNotFoundException e){
              return new ResponseEntity<>(HttpStatus.NOT_FOUND);
          }
     }
