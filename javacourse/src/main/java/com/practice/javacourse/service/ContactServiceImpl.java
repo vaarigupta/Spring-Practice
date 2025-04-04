@@ -36,4 +36,16 @@ public class ContactServiceImpl implements ContactService{
     public List<Contact> getAllContacts() {
         return contactRepository.getContacts();
     }
+
+    @Override
+    public void updateContact(String id, Contact contact) {
+        contactRepository.updateContact(findIndexById(id),contact);
+    }
+
+    @Override
+    public void deleteContact(String id) {
+        contactRepository.deleteContact(findIndexById(id));
+    }
+
+
 }

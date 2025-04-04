@@ -35,5 +35,16 @@ public class ContactController {
 
     }
 
+    @PutMapping("/contact/{id}")
+    public ResponseEntity<Contact> updateContact(@PathVariable  String id, @RequestBody Contact contact){
+            contactService.updateContact(id,contact);
+           Contact updatedContact = contactService.getContactById(id);
+            return new ResponseEntity<>(updatedContact,HttpStatus.OK);
+    }
 
+    @DeleteMapping("/contact/{id}")
+    public ResponseEntity<HttpStatus> deleteContact(@PathVariable String id){
+        contactService.deleteContact(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
