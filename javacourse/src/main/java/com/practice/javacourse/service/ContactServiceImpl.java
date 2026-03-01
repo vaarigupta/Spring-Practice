@@ -12,25 +12,17 @@ import java.util.stream.IntStream;
 @Service
 public class ContactServiceImpl implements ContactService{
 
-    @Autowired
+
     private ContactRepository contactRepository;
 
-
-    private int findIndexById(String id){
-        return IntStream.range(0, contactRepository.getContacts().size())
-                .filter(index -> contactRepository.getContacts().get(index).getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new ContactNotFoundException(id));
+    public ContactServiceImpl(ContactRepository contactRepository){
+        this.contactRepository = contactRepository;
     }
+
 
     @Override
     public Contact getContactById(String id){
-        return contactRepository.getContact(findIndexById(id));
-    }
-
-    @Override
-    public void createContact(Contact contact) {
-        contactRepository.createContact(contact);
+        return contactRepository.getContact(id);
     }
 
     @Override
@@ -39,13 +31,19 @@ public class ContactServiceImpl implements ContactService{
     }
 
     @Override
+    public void createContact(Contact contact) {
+        contactRepository.createContact(contact);
+    }
+
+
+    @Override
     public void updateContact(String id, Contact contact){
-        contactRepository.updateContact(findIndexById(id),contact);
+        contactRepository.updateContact(id,contact);
     }
 
     @Override
     public void deleteContact(String id){
-        contactRepository.deleteContact(findIndexById(id));
+        contactRepository.deleteContact(id);
     }
 
 

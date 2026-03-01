@@ -23,6 +23,7 @@ public class Contact {
     }
 
     public Contact(){
+
         this.id = UUID.randomUUID().toString();
     }
 
