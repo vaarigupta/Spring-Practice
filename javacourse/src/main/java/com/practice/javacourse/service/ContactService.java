@@ -1,6 +1,6 @@
 package com.practice.javacourse.service;
 
-import com.practice.javacourse.exception.ContactNotFoundException;
+
 import com.practice.javacourse.model.Contact;
 
 import java.util.List;

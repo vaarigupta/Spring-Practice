@@ -1,3 +1,6 @@
 spring:
   application:
     name: Java Course
+
+server:
+  port: 9090
